@@ -19,7 +19,7 @@ define(
             },
             openModal: function () {
 
-                if (!this.handleModal() ||  this.hasCookiModal()) {
+                if (this.handleModal() ||  this.hasCookiModal()) {
                     return
                 }
                 this.optionModal();
@@ -29,6 +29,7 @@ define(
                 date.setTime(date.getTime() + (minutes * 60 * 1000));
                 $.cookie('welcome_modal', date, {path: '/', expire: date});//Set the cookies
                 this.handleModal(true);
+                console.log("closed")
             },
             optionModal: function () {
                 var options = {
