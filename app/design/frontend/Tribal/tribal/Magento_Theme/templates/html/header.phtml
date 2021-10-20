@@ -1,0 +1,62 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Theme\Block\Html\Header $block
+ */
+$welcomeMessage = $block->getWelcome();
+?>
+<?php if ($block->getShowPart() == 'welcome') : ?>
+    <li class="greet welcome" data-bind="scope: 'customer'">
+        <!-- ko ifnot: hasCookies  -->
+        <div class="wlcome_default" id="welcome_default" data-bind="click: openModal()">
+            <span class="msg">
+                <?= $block->escapeHtml($welcomeMessage) ?>
+            </span>
+            <?= $block->getBlockHtml('header.additional') ?>
+        </div>
+
+        <!-- /ko -->
+    </li>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "customer": {
+                        "component": "Magento_Customer/js/view/customer"
+                    }
+                }
+            }
+        }
+    }
+
+    </script>
+
+    <script>
+        require(['jquery',
+                'Magento_Ui/js/modal/modal'],
+            function ($,modal) {
+                var options = {
+                    type: 'popup',
+                    modalClass: 'welcome_default_modal',
+                    title: 'Welcome',
+                    responsive: true,
+                    innerScroll: false,
+                    buttons: [{
+                        text: $.mage.__('Close'),
+                        class: '',
+                        click: function () {
+                            this.closeModal();
+                        }
+                    }]
+                }
+                var popup = modal(options, "#welcome_default");
+            })
+    </script>
+<?php elseif ($block->getShowPart() == 'other') : ?>
+    <?= $block->getChildHtml() ?>
+<?php endif ?>
